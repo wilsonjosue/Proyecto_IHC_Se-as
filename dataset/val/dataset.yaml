@@ -1,0 +1,7 @@
+path: \\?\C:\Users\danie\OneDrive\Escritorio\FormatoYolo\val\YOLODataset
+train: images/train
+val: images/val
+test:
+
+names:
+    0: A

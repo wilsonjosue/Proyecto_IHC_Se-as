@@ -1,0 +1,7 @@
+path: \\?\C:\Users\danie\OneDrive\Documentos\PhytonProjects\ProyectoIHCMejora\LenguajeVocales\dataset\
+train: train\
+val: val\
+test:
+
+names:
+    0: A
