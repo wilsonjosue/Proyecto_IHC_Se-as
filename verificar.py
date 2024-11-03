@@ -1,16 +1,25 @@
 import os
-ruta_img = 'C:/Users/danie/OneDrive/Documentos/PhytonProjects/ProyectoIHCMejora/LenguajeVocales/dataset/val/images'
-ruta_labels = 'C:/Users/danie/OneDrive/Documentos/PhytonProjects/ProyectoIHCMejora/LenguajeVocales/dataset/val/labels'
+import cv2
 
-def verificar_annotaciones(ruta_img, ruta_labels):
-    imgs = set(os.listdir(ruta_img))
-    labels = set(os.listdir(ruta_labels))
+# Directorio de las imágenes
+directorio = r'C:/Users/danie/OneDrive/Documentos/PhytonProjects/ProyectoIHCMejora/FormatoYoloLZ/train'
+nombre_base = 'Z'
 
-    sin_etiqueta = imgs - {f.replace('.txt', '.jpg') for f in labels}
-    if sin_etiqueta:
-        print("Imágenes sin etiqueta:", sin_etiqueta)
-    else:
-        print("Todas las imágenes tienen etiquetas correspondientes.")
+# Listar y ordenar todos los archivos .jpg en el directorio
+imagenes = sorted([f for f in os.listdir(directorio) if f.endswith('.jpg')])
 
-verificar_annotaciones("dataset/train/images", "dataset/train/labels")
-verificar_annotaciones("dataset/val/images", "dataset/val/labels")
+# Renombrar las imágenes
+for i, imagen_nombre in enumerate(imagenes):
+    # Cargar la imagen con cv2
+    imagen_path = os.path.join(directorio, imagen_nombre)
+    imagen = cv2.imread(imagen_path)
+    
+    # Crear el nuevo nombre y guardar la imagen
+    nuevo_nombre = f"{nombre_base}_{i}.jpg"
+    nuevo_path = os.path.join(directorio, nuevo_nombre)
+    cv2.imwrite(nuevo_path, imagen)
+    
+    # Eliminar el archivo con el nombre antiguo
+    os.remove(imagen_path)
+
+print("Renombrado completo.")

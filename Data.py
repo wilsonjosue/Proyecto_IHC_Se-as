@@ -4,7 +4,7 @@ import os
 # Importamos la clase SeguimientoManos
 import SeguimientoManos as sm
 #Creacion de la carpeta
-nombre = 'B'
+nombre = 'Z'
 
 direccion = 'C:/Users/danie/OneDrive/Documentos/PhytonProjects/ProyectoIHCMejora/LenguajeVocales/data'
 carpeta = direccion + '/'+ nombre
@@ -54,7 +54,7 @@ while True:
         # recorte = cv2.resize(recorte, (640,640), interpolation = cv2.INTER_CUBIC)
 
         #Almacenar nuestras imagenes que serviran para el etiquetado/entrenamiento
-        cv2.imwrite(carpeta + "/B_{}.jpg".format(cont), recorte)
+        cv2.imwrite(carpeta + "/Z_{}.jpg".format(cont), recorte)
         
         #aumentar contador
         cont = cont +1
@@ -68,7 +68,7 @@ while True:
 
     #Leer nuestro teclado
     t = cv2.waitKey(1)
-    if t == 27 or cont == 40:
+    if t == 27 or cont == 60:
         break
 
 cap.release()
