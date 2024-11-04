@@ -1,4 +1,4 @@
-path: \\?\C:\Users\danie\OneDrive\Documentos\PhytonProjects\ProyectoIHCMejora\YoloLetras\train\YOLODataset
+path: C:\Users\danie\OneDrive\Documentos\PhytonProjects\ProyectoIHCMejora\LenguajeVocales\dataset\
 train: images/train
 val: images/val
 test:
