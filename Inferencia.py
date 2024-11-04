@@ -68,7 +68,7 @@ while True:
 
         cv2.imshow("RECORTE", anotaciones)
        #cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), [0, 255, 0], 2)
-       #yolo task=segment mode=train epochs=30 data=dataset.yaml model=yolov8n-seg.pt imgsz=640 batch=2 device=cpu
+       #yolo task=segment mode=train epochs=30 data=dataset.yaml model=yolov8n.pt imgsz=640 batch=2 device=cpu
 
     # Mostrar FPS
     cv2.imshow("LENGUAJE VOCALES", frame)
