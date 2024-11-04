@@ -1,0 +1,33 @@
+path: \\?\C:\Users\danie\OneDrive\Documentos\PhytonProjects\ProyectoIHCMejora\YoloLetras\val\YOLODataset
+train: images/train
+val: images/val
+test:
+
+names:
+    0: O
+    1: G
+    2: R
+    3: J
+    4: W
+    5: F
+    6: M
+    7: E
+    8: P
+    9: T
+    10: B
+    11: Q
+    12: D
+    13: Y
+    14: H
+    15: C
+    16: S
+    17: I
+    18: L
+    19: N2
+    20: Z
+    21: U
+    22: V
+    23: K
+    24: N
+    25: X
+    26: A
