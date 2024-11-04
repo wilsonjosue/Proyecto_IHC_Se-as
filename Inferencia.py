@@ -17,13 +17,13 @@ cap.set(4, 720)
 device = 'cuda' if torch.cuda.is_available() and torch.cuda.get_device_capability(0)[0] >= 3.7 else 'cpu'
 print(f"Usando dispositivo: {device}")
 
-model = YOLO('best.pt').to(device)
+model = YOLO('best2.pt').to(device)
 
 # Leer nuestro modelo
 #model = YOLO('best.pt')
 
 # Declarar detector
-detector = sm.detectormanos(Confdeteccion = 0.9)
+detector = sm.detectormanos(Confdeteccion = 0.6)
 
 while True:
     # Realizar la lectura de la cap
@@ -67,7 +67,8 @@ while True:
                 anotaciones = resultados[0].plot()
 
         cv2.imshow("RECORTE", anotaciones)
-       # cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), [0, 255, 0], 2)
+       #cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), [0, 255, 0], 2)
+       #yolo task=segment mode=train epochs=30 data=dataset.yaml model=yolov8n-seg.pt imgsz=640 batch=2 device=cpu
 
     # Mostrar FPS
     cv2.imshow("LENGUAJE VOCALES", frame)
