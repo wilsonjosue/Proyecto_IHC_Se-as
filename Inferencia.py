@@ -20,6 +20,7 @@ print(f"Usando dispositivo: {device}")
 # model = YOLO('best2.pt').to(device)
 
 # Modelo recomendado. Entrenamiento:yoloV8m; bach(depente de tu RAM):4; epocas: 100 a mas.
+model = YOLO('best2.pt').to(device)
 
 # Leer nuestro modelo
 #model = YOLO('best.pt')
