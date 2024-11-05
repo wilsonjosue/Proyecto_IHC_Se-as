@@ -17,7 +17,9 @@ cap.set(4, 720)
 device = 'cuda' if torch.cuda.is_available() and torch.cuda.get_device_capability(0)[0] >= 3.7 else 'cpu'
 print(f"Usando dispositivo: {device}")
 
-model = YOLO('best2.pt').to(device)
+# model = YOLO('best2.pt').to(device)
+
+# Modelo recomendado. Entrenamiento:yoloV8m; bach(depente de tu RAM):4; epocas: 100 a mas.
 
 # Leer nuestro modelo
 #model = YOLO('best.pt')
