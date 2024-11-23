@@ -129,19 +129,11 @@ with mp_hands.Hands(
                                 cv2.FONT_HERSHEY_SIMPLEX, 
                                 3.0, (0, 0, 255), 6)
                     
-                #elif abs(index_finger_tip[1] - thumb_tip[1]) < 360 and \
-                #    index_finger_tip[1] - middle_finger_pip[1]<0 and index_finger_tip[1] - middle_finger_tip[1] < 0 and \
-                #        index_finger_tip[1] - index_finger_pip[1] > 0:
-                #   cv2.putText(image, 'C', (700, 150), 
-                #                cv2.FONT_HERSHEY_SIMPLEX, 
-                #                3.0, (0, 0, 255), 6)
-
-                # Agregar lógica de detección de la letra 'C'
                 elif 30 < abs(index_finger_tip[1] - thumb_tip[1]) < 90 and \
                     abs(index_finger_tip[0] - thumb_tip[0]) < 40 and \
-                    middle_finger_tip[1] > middle_finger_pip[1] and \
-                    ring_finger_tip[1] > ring_finger_pip[1] and \
-                    pinky_tip[1] > pinky_pip[1]:
+                    middle_finger_tip[1] > middle_finger_dip[1] and \
+                    ring_finger_tip[1] > ring_finger_dip[1] and \
+                    pinky_tip[1] > pinky_dip[1]:
                     cv2.putText(image, 'C', (700, 150), 
                                 cv2.FONT_HERSHEY_SIMPLEX, 
                                 3.0, (0, 0, 255), 6)
@@ -158,61 +150,54 @@ with mp_hands.Hands(
                                 
                 elif index_finger_pip[1] < index_finger_tip[1] and pinky_pip[1] < pinky_tip[1]  and \
                     middle_finger_pip[1] < middle_finger_tip[1] and ring_finger_pip[1] < ring_finger_tip[1] \
-                        and abs(index_finger_tip[1] - thumb_tip[1]) < 65 and \
-                            thumb_tip[1] - index_finger_tip[1] > 0 \
-                            and thumb_tip[1] - middle_finger_tip[1] > 0 \
-                            and thumb_tip[1] - ring_finger_tip[1] > 0:
+                    and abs(index_finger_tip[1] - thumb_tip[1]) < 65 and thumb_tip[1] - index_finger_tip[1] > 0 \
+                    and thumb_tip[1] - middle_finger_tip[1] > 0 and thumb_tip[1] - ring_finger_tip[1] > 0:
                     cv2.putText(image, 'E', (700, 150), 
                                 cv2.FONT_HERSHEY_SIMPLEX, 
                                 3.0, (0, 0, 255), 6)
                     
                 elif  pinky_pip[1] - pinky_tip[1] > 0 and middle_finger_pip[1] - middle_finger_tip[1] > 0 and \
                     ring_finger_pip[1] - ring_finger_tip[1] > 0 and index_finger_pip[1] - index_finger_tip[1] < 0 \
-                        and abs(thumb_pip[1] - thumb_tip[1]) > 0 and distancia_euclidiana(index_finger_tip, thumb_tip) <65:
-
+                    and abs(thumb_pip[1] - thumb_tip[1]) > 0 and distancia_euclidiana(index_finger_tip, thumb_tip) <65:
                     cv2.putText(image, 'F', (700, 150), 
                                 cv2.FONT_HERSHEY_SIMPLEX, 
                                 3.0, (0, 0, 255), 6)
                 # Seguimos con las demas señas
-                elif index_finger_tip[1] < index_finger_pip[1] and \
-                    thumb_tip[1] > thumb_ip[1] and \
-                    abs(index_finger_tip[0] - thumb_tip[0]) < 40 and \
-                    middle_finger_tip[1] > middle_finger_pip[1] and \
-                    ring_finger_tip[1] > ring_finger_pip[1] and \
-                    pinky_tip[1] > pinky_pip[1]:
+                elif index_finger_tip[1] < index_finger_pip[1] and thumb_tip[1] > thumb_ip[1] and \
+                    abs(index_finger_tip[0] - thumb_tip[0]) < 40 and middle_finger_tip[1] > middle_finger_pip[1] and \
+                    ring_finger_tip[1] > ring_finger_pip[1] and pinky_tip[1] > pinky_pip[1]:
                     cv2.putText(image, 'G', (700, 150), 
                                 cv2.FONT_HERSHEY_SIMPLEX, 
-                                3.0, (0, 0, 255), 6)
+                               3.0, (0, 0, 255), 6)
 
-                elif index_finger_pip[1] > index_finger_tip[1] and middle_finger_pip[1] > middle_finger_tip[1] and \
-                    ring_finger_pip[1] < ring_finger_tip[1] and pinky_pip[1] < pinky_tip[1] and \
-                        abs(index_finger_tip[1] - middle_finger_tip[1]) < 30:
-                    cv2.putText(image, 'H', (700, 150), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 
-                                3.0, (0, 0, 255), 6)
+                #elif index_finger_pip[1] > index_finger_tip[1] and middle_finger_pip[1] > middle_finger_tip[1] and \
+                #    ring_finger_pip[1] < ring_finger_tip[1] and pinky_pip[1] < pinky_tip[1] and \
+                #        abs(index_finger_tip[1] - middle_finger_tip[1]) < 30:
+                #    cv2.putText(image, 'H', (700, 150), 
+                #                cv2.FONT_HERSHEY_SIMPLEX, 
+                #                3.0, (0, 0, 255), 6)
                     
-                elif pinky_tip[1] < pinky_pip[1] and \
-                    index_finger_tip[1] > index_finger_mcp[1] and \
-                    middle_finger_tip[1] > middle_finger_mcp[1] and \
-                    ring_finger_tip[1] > ring_finger_mcp[1] and \
-                    thumb_tip[1] > thumb_ip[1]:
-                    cv2.putText(image, 'I', (700, 150), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 
-                                3.0, (0, 0, 255), 6)
+                #elif pinky_tip[1] < pinky_pip[1] and \
+                #    index_finger_tip[1] > index_finger_mcp[1] and \
+                #    middle_finger_tip[1] > middle_finger_mcp[1] and \
+                #    ring_finger_tip[1] > ring_finger_mcp[1] and \
+                #    thumb_tip[1] > thumb_ip[1]:
+                #    cv2.putText(image, 'I', (700, 150), 
+                #                cv2.FONT_HERSHEY_SIMPLEX, 
+                #                3.0, (0, 0, 255), 6)
 
-                elif pinky_pip[1] - pinky_tip[1] > 30 and pinky_tip[1] > ring_finger_tip[1] and \
-                    pinky_tip[1] > middle_finger_tip[1] and pinky_tip[1] > index_finger_tip[1] and \
-                    pinky_tip[1] > thumb_tip[1]:
-                    cv2.putText(image, 'J', (700, 150), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 
-                                3.0, (0, 0, 255), 6)
-
-                elif (index_finger_tip[1] < middle_finger_tip[1] < ring_finger_tip[1] and   # Índice y medio están más altos
-                    thumb_tip[1] < index_finger_tip[1] and thumb_tip < middle_finger_tip[1] and  # Pulgar diagonal hacia el frente
-                    ring_finger_tip[1] > index_finger_tip[1] and pinky_tip[1] > index_finger_tip[1]): # Anular y meñique están flexionados
-                    cv2.putText(image, 'K', (50, 50), 
-                                cv2.FONT_HERSHEY_SIMPLEX,
-                                2, (0, 0, 255), 6)
+                #elif pinky_pip[1] - pinky_tip[1] > 30 and pinky_tip[1] > ring_finger_tip[1] and \
+                #    pinky_tip[1] > middle_finger_tip[1] and pinky_tip[1] > index_finger_tip[1] and \
+                #    pinky_tip[1] > thumb_tip[1]:
+                #    cv2.putText(image, 'J', (700, 150), 
+                #                cv2.FONT_HERSHEY_SIMPLEX, 
+                #                3.0, (0, 0, 255), 6)
+                
+                #elif (index_finger_tip[1] < middle_finger_tip[1] < ring_finger_tip[1] and   
+                #    thumb_tip[1] < index_finger_tip[1] and thumb_tip < middle_finger_tip[1] and  
+                #    ring_finger_tip[1] > index_finger_tip[1] and pinky_tip[1] > index_finger_tip[1]): 
+                #                cv2.FONT_HERSHEY_SIMPLEX,
+                #                2, (0, 0, 255), 6)
                  
                 print("pulgar", thumb_tip[1])
                 print("dedo indice",index_finger_tip[1])
