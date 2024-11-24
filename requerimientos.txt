@@ -1,9 +1,9 @@
+tk
+pyaudio
+pillow
+speechRecognition
+pyttsx3
 opencv-python
-imutils
 mediapipe
 tensorflow
 customtkinter
-ultralytics
-opencv-python-headless
-label
-numpy
