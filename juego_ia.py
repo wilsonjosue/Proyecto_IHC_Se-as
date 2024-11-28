@@ -24,6 +24,19 @@ class Juego_senias:
         #self.Texto1, self.Texto2 = tk.StringVar(), tk.StringVar()
         #self.Texto2.set("Tus jugadas: ")
 
+        # Imagen
+        self.frame_imagen = None
+        # Muñeco
+        self.frame_munieco, self.Lienzo, self.EntradaTexto = None, None, None
+        # Palabra
+        self.frame_palabra, self.Texto1, self.Etiqueta1 = None, None, None
+        # Jugadas
+        self.Texto2, self.Etiqueta2 = None, None
+        # Botones
+        self.frame_botones, self.BotonEnviarTexto, self.BotonSalir, self.BotonNuevoJuego = None, None, None, None
+        # Salir a las opciones
+        self.callback = callback
+
     def ejecutar(self):
         # Configuración de la interfaz
         app = ct.CTk()
@@ -37,6 +50,7 @@ class Juego_senias:
         self.Texto2.set("Tus jugadas: ")
 
         # Crear elementos de la interfaz
+        self.entrada_teclado(app)
         self.titulo(app)
         self.camara(app)
         self.munieco(app)
@@ -53,6 +67,24 @@ class Juego_senias:
         # Inicia un hilo para capturar las letras detectadas por la cámara
         threading.Thread(target=self.procesar_camara, daemon=True).start()
 
+    # Todo LO RELACIONADO CON LA ENTRADA DEL TECLADO  
+    def entrada_teclado(self,app):
+            app.bind("<Return>",lambda x: self.BotonEnviar())
+            app.bind("<Control_R>",lambda x: self.JuegoNuevo())
+            app.bind("<Control_L>",lambda x: self.JuegoNuevo())
+            app.bind("<Escape>",lambda x: exit())
+            # Asociar la función update_text con el evento de presionar tecla
+            app.bind("<Key>", self.update_text)
+
+    def update_text(self, event):
+        # Obtener la tecla presionada
+        key_pressed = event.char
+
+        # Omitir ciertas teclas
+        if key_pressed not in {'\r', '\x1b', '\uf702', '\uf703'}:  # '\r': Enter, '\x1b': Escape, '\uf702' y '\uf703': Control
+            # Actualizar el texto de la etiqueta
+            self.EntradaTexto.configure(text=key_pressed)
+    # falta condigurar arregalr parque no envie la letra aoutomaticamente.
     def procesar_camara(self):
         while True:
             ret, frame = self.cap.read()
@@ -74,6 +106,7 @@ class Juego_senias:
     def JuegoNuevo(self):
         self.EstamosJugando = True
         self.ObjetoJuego.nuevojuego()
+        #AÑADIR IMAGEN PARA LA PALABRA
         self.__ActualizarVista()
 
     def BotonEnviar(self):
@@ -141,17 +174,49 @@ class Juego_senias:
         )
         self.EntradaTexto.configure(fg_color="black", font=myfont, text='')
 
+    # Modificaciones para palabra como se ve en el recuadro falta ajustar
     def palabra(self, app):
-        self.Texto1.set("_ " * len(self.ObjetoJuego.getPalabra()))
-        etiqueta_palabra = ct.CTkLabel(app, textvariable=self.Texto1, fg_color="white", width=600, height=100)
-        etiqueta_palabra.grid(row=2, column=1)
+        #self.Texto1.set("_ " * len(self.ObjetoJuego.getPalabra()))
+        #etiqueta_palabra = ct.CTkLabel(app, textvariable=self.Texto1, fg_color="white", width=600, height=100)
+        #etiqueta_palabra.grid(row=2, column=1)
+        self.frame_palabra=ct.CTkFrame(master=app, width=750, height=210, fg_color="transparent")
+        self.frame_palabra.grid(row=2, column=1, padx = (20,10),pady=(10,10))
+        #Palabra
+        self.Texto1=tk.StringVar()
+
+        self.Etiqueta1=ct.CTkLabel(self.frame_palabra, textvariable=self.Texto1, width=680, height=2)
+        self.Etiqueta1.pack(side=ct.TOP, padx = (10,5), pady=(5,15))
+        self.Etiqueta1.configure(fg_color="transparent", font=("Verdana",60))
+
+        #Jugadas
+        self.Texto2=tk.StringVar()
+        self.Texto2.set("Tus jugadas: ")
+
+        self.Etiqueta2=ct.CTkLabel(self.frame_palabra, textvariable=self.Texto2, width=40, height=2)
+        self.Etiqueta2.pack(side=ct.BOTTOM, padx = (12,5), pady=(15,5))
+        self.Etiqueta2.configure(fg_color="transparent" ,font=("Verdana",30))
 
     def botones(self, app):
-        boton_nuevo = ct.CTkButton(app, text="Nuevo Juego", command=self.JuegoNuevo)
-        boton_nuevo.grid(row=3, column=0)
+        #boton_nuevo = ct.CTkButton(app, text="Nuevo Juego", command=self.JuegoNuevo)
+        #boton_nuevo.grid(row=3, column=0)
+        #boton_salir = ct.CTkButton(app, text="Salir", command=app.destroy)
+        #boton_salir.grid(row=3, column=1)
+        self.frame_botones = ct.CTkFrame(master=app, height=50, fg_color="transparent")
+        self.frame_botones.grid(row=3, column=0, columnspan=2, pady=(4,4), padx=(10,10))
 
-        boton_salir = ct.CTkButton(app, text="Salir", command=app.destroy)
-        boton_salir.grid(row=3, column=1)
+        font_title = ct.CTkFont(family='Consolas', weight='bold', size=24)
+
+        self.BotonEnviarTexto=ct.CTkButton(self.frame_botones, text=">>>", width=80, command = self.BotonEnviar)
+        self.BotonEnviarTexto.grid(row=0, column=0, sticky="ew", padx = 25)
+        self.BotonEnviarTexto.configure(font=font_title, fg_color='steelblue', text_color= 'white', corner_radius= 8)  
+
+        self.BotonNuevoJuego = ct.CTkButton(self.frame_botones, text="NUEVO JUEGO", width=250, command=self.JuegoNuevo)
+        self.BotonNuevoJuego.grid(row=0, column=1, sticky="ew", padx = 120)
+        self.BotonNuevoJuego.configure(font=font_title, fg_color='steelblue', text_color= 'white', corner_radius= 8)
+
+        self.BotonSalir=ct.CTkButton(self.frame_botones, text="SALIR", width=120, command =lambda: self.cerrar_ventana(app))
+        self.BotonSalir.grid(row=0, column=2, sticky="ew", padx = 25)
+        self.BotonSalir.configure(font=font_title, fg_color='steelblue', text_color= 'white', corner_radius= 8)
 
     # para dibujar el ahorcado
     def __Dibujo(self):
