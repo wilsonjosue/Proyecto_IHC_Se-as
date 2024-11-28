@@ -70,7 +70,7 @@ class Juego_senias:
             frame_procesado = cv2.flip(frame_procesado, 1)
             img = Image.fromarray(frame_procesado)
             self.video_label.configure(image=ct.CTkImage(dark_image=img, size=(500, 370)))
-
+    # todo LO RELACIONADO CON EL JUEGO DEL AHORCADO
     def JuegoNuevo(self):
         self.EstamosJugando = True
         self.ObjetoJuego.nuevojuego()
@@ -84,12 +84,21 @@ class Juego_senias:
                 if self.ObjetoJuego.getVictoria() or not self.ObjetoJuego.getJugadorEstaVivo():
                     self.EstamosJugando = False
                 self.__ActualizarVista()
+        else:
+            self.JuegoNuevo()
+        self.EntradaTexto.configure(text="")
 
     def __ActualizarVista(self):
         if self.EstamosJugando:
             # Actualizamos la palabra oculta y las letras usadas
-            self.Texto1.set(" ".join(self.ObjetoJuego.getLetrero()))
-            self.Texto2.set("Tus jugadas: " + ", ".join(self.ObjetoJuego.getLetrasUsadas()))
+            letrero=""
+            for x in self.ObjetoJuego.getLetrero(): letrero+=x+" "  
+            self.Texto1.set(letrero)
+            mensaje="Tus jugadas: "
+            for x in self.ObjetoJuego.getLetrasUsadas():mensaje+=x
+            self.Texto2.set(mensaje)
+            #self.Texto1.set(" ".join(self.ObjetoJuego.getLetrero()))
+            #self.Texto2.set("Tus jugadas: " + ", ".join(self.ObjetoJuego.getLetrasUsadas()))
         else:
             # Mensajes finales
             if self.ObjetoJuego.getVictoria():
@@ -97,6 +106,7 @@ class Juego_senias:
             else:
                 self.Texto1.set(f"Lo siento, perdiste. La palabra era: {self.ObjetoJuego.getPalabra()}")
             self.Texto2.set("")
+        self.__Dibujo() # esto acciona para dibujar el hombrecito
 
     def titulo(self, app):
         font_title = ct.CTkFont(family='Consolas', weight='bold', size=25)
@@ -112,9 +122,24 @@ class Juego_senias:
         self.video_label = ct.CTkLabel(master=self.video_frame, text='', width=600, height=370, corner_radius=12)
         self.video_label.pack(fill=ct.BOTH, padx=(0, 0), pady=(0, 0))
 
+    # Interfaz del ahorcado muñeco
     def munieco(self, app):
-        self.EntradaTexto = ct.CTkLabel(app, text='', fg_color="black", width=200, height=50)
-        self.EntradaTexto.grid(row=2, column=0)
+        #self.EntradaTexto = ct.CTkLabel(app, text='', fg_color="black", width=200, height=50)
+        #self.EntradaTexto.grid(row=2, column=0)
+        self.frame_munieco=ct.CTkFrame(master=app, width=600, height=210, fg_color="transparent")
+        self.frame_munieco.grid(row=2, column=0, padx = (12,5),pady=(5,3))
+
+        self.Lienzo=ct.CTkCanvas(self.frame_munieco, width=200, height=200, bg="dark green")
+        self.Lienzo.pack(side=ct.LEFT, padx=(15, 20), pady=5)
+
+        self.EntradaTexto=ct.CTkLabel(self.frame_munieco, width=220, height=200, justify=ct.CENTER)
+        self.EntradaTexto.pack(side=ct.RIGHT, padx=(20, 5), pady=5)
+        myfont = ct.CTkFont(
+            family='Consolas',
+            weight='bold',
+            size=140
+        )
+        self.EntradaTexto.configure(fg_color="black", font=myfont, text='')
 
     def palabra(self, app):
         self.Texto1.set("_ " * len(self.ObjetoJuego.getPalabra()))
@@ -128,6 +153,69 @@ class Juego_senias:
         boton_salir = ct.CTkButton(app, text="Salir", command=app.destroy)
         boton_salir.grid(row=3, column=1)
 
+    # para dibujar el ahorcado
+    def __Dibujo(self):
+        
+        if self.EstamosJugando:
+            oportunidades=self.ObjetoJuego.getOportunidades()
+            if oportunidades==1:
+                self.Lienzo.delete("all")
+                self.Lienzo.create_line(30,185, 30,20, 100,20, 100,45 ,width=5,fill="white")#horca
+                self.Lienzo.create_line(15,193, 15,185, 185,185, 185,193,width=5,fill="white")#horca
+                self.Lienzo.create_oval(85,45, 115,75, width=3,fill="dark green",outline="white")#cabeza
+                self.Lienzo.create_line(100,75, 100,135, width=3,fill="white")#torso
+                self.Lienzo.create_line(100,82, 70,112, width=3,fill="white")#brazo1
+                self.Lienzo.create_line(100,82, 130,112, width=3,fill="white")#brazo2
+                self.Lienzo.create_line(100,135, 70,165, width=3,fill="white")#pierna1
+            elif oportunidades==2:
+                self.Lienzo.delete("all")
+                self.Lienzo.create_line(30,185, 30,20, 100,20, 100,45 ,width=5,fill="white")#horca
+                self.Lienzo.create_line(15,193, 15,185, 185,185, 185,193,width=5,fill="white")#horca
+                self.Lienzo.create_oval(85,45, 115,75, width=3,fill="dark green",outline="white")#cabeza
+                self.Lienzo.create_line(100,75, 100,135, width=3,fill="white")#torso
+                self.Lienzo.create_line(100,82, 70,112, width=3,fill="white")#brazo1
+                self.Lienzo.create_line(100,82, 130,112, width=3,fill="white")#brazo2
+            elif oportunidades==3:
+                self.Lienzo.delete("all")
+                self.Lienzo.create_line(30,185, 30,20, 100,20, 100,45 ,width=5,fill="white")#horca
+                self.Lienzo.create_line(15,193, 15,185, 185,185, 185,193,width=5,fill="white")#horca
+                self.Lienzo.create_oval(85,45, 115,75, width=3,fill="dark green",outline="white")#cabeza
+                self.Lienzo.create_line(100,75, 100,135, width=3,fill="white")#torso
+                self.Lienzo.create_line(100,82, 70,112, width=3,fill="white")#brazo1
+            elif oportunidades==4:
+                self.Lienzo.delete("all")
+                self.Lienzo.create_line(30,185, 30,20, 100,20, 100,45 ,width=5,fill="white")#horca
+                self.Lienzo.create_line(15,193, 15,185, 185,185, 185,193,width=5,fill="white")#horca
+                self.Lienzo.create_oval(85,45, 115,75, width=3,fill="dark green",outline="white")#cabeza
+                self.Lienzo.create_line(100,75, 100,135, width=3,fill="white")#torso
+            elif oportunidades==5:
+                self.Lienzo.delete("all")
+                self.Lienzo.create_line(30,185, 30,20, 100,20, 100,45 ,width=5,fill="white")#horca
+                self.Lienzo.create_line(15,193, 15,185, 185,185, 185,193,width=5,fill="white")#horca
+                self.Lienzo.create_oval(85,45, 115,75, width=3,fill="dark green",outline="white")#cabeza
+            else:
+                self.Lienzo.delete("all")
+                self.Lienzo.create_line(30,185, 30,20, 100,20, 100,45 ,width=5,fill="white")#horca
+                self.Lienzo.create_line(15,193, 15,185, 185,185, 185,193,width=5,fill="white")#horca
+        else:
+            if self.ObjetoJuego.getVictoria():
+                self.Lienzo.delete("all")
+                self.Lienzo.create_oval(85,45, 115,75, width=3,fill="dark green",outline="white")#cabeza
+                self.Lienzo.create_line(100,75, 100,135, width=3,fill="white")#torso
+                self.Lienzo.create_line(100,87, 70,57, width=3,fill="white")#brazo1
+                self.Lienzo.create_line(100,87, 130,57, width=3,fill="white")#brazo2
+                self.Lienzo.create_line(100,135, 70,165, width=3,fill="white")#pierna1
+                self.Lienzo.create_line(100,135, 130,165, width=3,fill="white")#pierna2
+            else:
+                self.Lienzo.delete("all")
+                self.Lienzo.create_line(30,185, 30,20, 100,20, 100,45 ,width=5,fill="white")#horca
+                self.Lienzo.create_line(15,193, 15,185, 185,185, 185,193,width=5,fill="white")#horca
+                self.Lienzo.create_oval(85,45, 115,75, width=3,fill="dark green",outline="white")#cabeza
+                self.Lienzo.create_line(100,75, 100,135, width=3,fill="white")#torso
+                self.Lienzo.create_line(100,82, 70,112, width=3,fill="white")#brazo1
+                self.Lienzo.create_line(100,82, 130,112, width=3,fill="white")#brazo2
+                self.Lienzo.create_line(100,135, 70,165, width=3,fill="white")#pierna1
+                self.Lienzo.create_line(100,135, 130,165, width=3,fill="white")#pierna2
 
 if __name__ == "__main__":
     juego = Juego_senias(callback=None)
