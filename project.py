@@ -1,15 +1,15 @@
 import time
 from asistente import AsistenteVoz
-from aprendizaje import Aprendizaje
-from test import Test
+#from aprendizaje import Aprendizaje
+#from test import Test
 from juego_ia import Juego_senias
 import customtkinter as ctk
 
 class VirtualAssistant:
     def __init__(self):
         self.asistente_voz = AsistenteVoz()
-        self.mi_aprendizaje = Aprendizaje(callback=self.presentar_opciones)
-        self.mi_test = Test(callback=self.presentar_opciones)
+        #self.mi_aprendizaje = Aprendizaje(callback=self.presentar_opciones)
+        #self.mi_test = Test(callback=self.presentar_opciones)
         self.mi_juego = Juego_senias(callback=self.presentar_opciones)
         self.option_label = None
         self.win_choose = None
