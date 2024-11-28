@@ -20,8 +20,9 @@ class Juego_senias:
         self.frame_camara, self.video_frame, self.video_label = None, None, None
         # Variables para el juego
         self.EntradaTexto = None
-        self.Texto1, self.Texto2 = tk.StringVar(), tk.StringVar()
-        self.Texto2.set("Tus jugadas: ")
+        self.Texto1, self.Texto2 = None, None  # Inicializadas más tarde
+        #self.Texto1, self.Texto2 = tk.StringVar(), tk.StringVar()
+        #self.Texto2.set("Tus jugadas: ")
 
     def ejecutar(self):
         # Configuración de la interfaz
@@ -29,6 +30,11 @@ class Juego_senias:
         app.geometry("1200x690")
         app.title("Juego del Ahorcado")
         app.resizable(False, False)
+
+        #Crear variables después de inicializar la raíz
+        self.Texto1 = tk.StringVar()
+        self.Texto2 = tk.StringVar()
+        self.Texto2.set("Tus jugadas: ")
 
         # Crear elementos de la interfaz
         self.titulo(app)
