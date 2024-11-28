@@ -84,7 +84,7 @@ class Juego_senias:
         if key_pressed not in {'\r', '\x1b', '\uf702', '\uf703'}:  # '\r': Enter, '\x1b': Escape, '\uf702' y '\uf703': Control
             # Actualizar el texto de la etiqueta
             self.EntradaTexto.configure(text=key_pressed)
-    # falta condigurar arregalr parque no envie la letra aoutomaticamente.
+    # falta condigurar arreglzr parque no envie la letra aoutomaticamente y este ala izquierda arriba pantalla.
     def procesar_camara(self):
         while True:
             ret, frame = self.cap.read()
@@ -95,13 +95,15 @@ class Juego_senias:
 
             if letra_detectada:
                 self.EntradaTexto.configure(text=letra_detectada)
-                self.BotonEnviar()  # Enviar automáticamente la letra detectada al juego
+                #self.BotonEnviar()  # Enviar automáticamente la letra detectada al juego
 
             # Actualizar el feed de la cámara en la interfaz
             frame_procesado = cv2.cvtColor(frame_procesado, cv2.COLOR_BGR2RGBA)
             frame_procesado = cv2.flip(frame_procesado, 1)
             img = Image.fromarray(frame_procesado)
             self.video_label.configure(image=ct.CTkImage(dark_image=img, size=(500, 370)))
+            self.video_lable.after(10, self.procesar_camara)
+            
     # todo LO RELACIONADO CON EL JUEGO DEL AHORCADO
     def JuegoNuevo(self):
         self.EstamosJugando = True
@@ -146,14 +148,25 @@ class Juego_senias:
         title = ct.CTkLabel(app, text='JUEGO DEL AHORCADO CON SEÑAS', fg_color='steelblue',
                             text_color='white', height=30, font=font_title, corner_radius=8)
         title.grid(row=0, column=0, columnspan=2, sticky="ew", pady=(5, 4), padx=(7, 10))
-
+    #Interfaz de camara
     def camara(self, app):
+        self.frame_camara = ct.CTkFrame(master=app)   #, width=680, height = 400
+        self.frame_camara.grid(row=1, column=0, columnspan=2, padx = (14,5), pady=(3,0))
+
         self.video_frame = ct.CTkFrame(master=app, corner_radius=12)
         self.video_frame.grid(row=1, column=0, columnspan=2, padx=(10, 10), pady=(5, 5))
 
         # Etiqueta para el feed de video
         self.video_label = ct.CTkLabel(master=self.video_frame, text='', width=600, height=370, corner_radius=12)
         self.video_label.pack(fill=ct.BOTH, padx=(0, 0), pady=(0, 0))
+
+        # Cargar imagen de cámara apagada
+        camera_off_image = ct.CTkImage(light_image=Image.open("camara_apagada.png"), size=(590, 350))
+        self.video_label.configure(image=camera_off_image)
+
+        # Create a button to start the camera feed
+        self.Camera_feed_start = ct.CTkButton(master=self.frame_camara, text='START', width=150, height=40, border_width=0, corner_radius=12, command=lambda: self.open_camera1()) #, command=lambda: self.camara_ia.open_camera1()
+        self.Camera_feed_start.pack(side=ct.LEFT, pady=(5, 10))
 
     # Interfaz del ahorcado muñeco
     def munieco(self, app):
@@ -281,6 +294,19 @@ class Juego_senias:
                 self.Lienzo.create_line(100,82, 130,112, width=3,fill="white")#brazo2
                 self.Lienzo.create_line(100,135, 70,165, width=3,fill="white")#pierna1
                 self.Lienzo.create_line(100,135, 130,165, width=3,fill="white")#pierna2
+
+    def cerrar_ventana(self, app):
+        self.desvincular_eventos(app)
+        app.destroy()
+        if self.callback:
+            self.callback()
+    
+    def desvincular_eventos(self, app):
+        app.unbind("<Return>")
+        app.unbind("<Control_R>")
+        app.unbind("<Control_L>")
+        app.unbind("<Escape>")
+        app.unbind("<Key>")
 
 if __name__ == "__main__":
     juego = Juego_senias(callback=None)
