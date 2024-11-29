@@ -101,8 +101,18 @@ class Juego_senias:
             frame_procesado = cv2.cvtColor(frame_procesado, cv2.COLOR_BGR2RGBA)
             frame_procesado = cv2.flip(frame_procesado, 1)
             img = Image.fromarray(frame_procesado)
-            self.video_label.configure(image=ct.CTkImage(dark_image=img, size=(500, 370)))
-            self.video_label.after(10, self.procesar_camara)
+
+            # Actualizar la interfaz gráfica usando el hilo principal de Tkinter
+            # solucionamos problemas ValueError: list.remove(x): x not in list
+            def actualizar_imagen():
+                # Reutilizamos la misma instancia de CTkImage
+                if not hasattr(self, "_ctk_image"):
+                    self._ctk_image = ct.CTkImage(dark_image=img, size=(500, 370))
+                else:
+                    self._ctk_image.configure(dark_image=img)
+                self.video_label.configure(image=self._ctk_image)
+
+            self.video_label.after(0, actualizar_imagen)
             
     # todo LO RELACIONADO CON EL JUEGO DEL AHORCADO
     def JuegoNuevo(self):
@@ -298,8 +308,8 @@ class Juego_senias:
     def cerrar_ventana(self, app):
         self.desvincular_eventos(app)
         app.destroy()
-        if self.callback:
-            self.callback()
+        #if self.callback:
+        #    self.callback()
     
     def desvincular_eventos(self, app):
         app.unbind("<Return>")
