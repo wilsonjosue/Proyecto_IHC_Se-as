@@ -103,7 +103,7 @@ class Juego_senias:
             img = Image.fromarray(frame_procesado)
             self.video_label.configure(image=ct.CTkImage(dark_image=img, size=(500, 370)))
             self.video_label.after(10, self.procesar_camara)
-
+            
     # todo LO RELACIONADO CON EL JUEGO DEL AHORCADO
     def JuegoNuevo(self):
         self.EstamosJugando = True
@@ -180,7 +180,6 @@ class Juego_senias:
 
         self.EntradaTexto=ct.CTkLabel(self.frame_munieco, width=220, height=200, justify=ct.CENTER)
         self.EntradaTexto.pack(side=ct.RIGHT, padx=(20, 5), pady=5)
-
         myfont = ct.CTkFont(
             family='Consolas',
             weight='bold',
@@ -234,7 +233,7 @@ class Juego_senias:
 
     # para dibujar el ahorcado
     def __Dibujo(self):
-        
+
         if self.EstamosJugando:
             oportunidades=self.ObjetoJuego.getOportunidades()
             if oportunidades==1:
@@ -297,17 +296,17 @@ class Juego_senias:
                 self.Lienzo.create_line(100,135, 130,165, width=3,fill="white")#pierna2
 
     def cerrar_ventana(self, app):
-        #self.desvincular_eventos(app)
+        self.desvincular_eventos(app)
         app.destroy()
         if self.callback:
             self.callback()
     
-    #def desvincular_eventos(self, app):
-    #    app.unbind("<Return>")
-    #    app.unbind("<Control_R>")
-    #    app.unbind("<Control_L>")
-    #    app.unbind("<Escape>")
-    #    app.unbind("<Key>")
+    def desvincular_eventos(self, app):
+        app.unbind("<Return>")
+        app.unbind("<Control_R>")
+        app.unbind("<Control_L>")
+        app.unbind("<Escape>")
+        app.unbind("<Key>")
 
 if __name__ == "__main__":
     juego = Juego_senias(callback=None)
