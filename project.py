@@ -3,7 +3,7 @@ from asistente import AsistenteVoz
 #from aprendizaje import Aprendizaje
 #from test import Test
 from juego_AH import Juego_senias
-#from juego_CS import 
+#from juego_nuevo import 
 #from juego_CS import 
 import customtkinter as ctk
 

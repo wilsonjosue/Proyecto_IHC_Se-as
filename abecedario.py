@@ -135,9 +135,7 @@ class ClasificadorSenia:
         #                cv2.FONT_HERSHEY_SIMPLEX, 
         #                3.0, (0, 0, 255), 6)
                     
-        #elif (index_finger_tip[1] < middle_finger_tip[1] < ring_finger_tip[1] and   
-        #    thumb_tip[1] < index_finger_tip[1] and thumb_tip < middle_finger_tip[1] and  
-        #    ring_finger_tip[1] > index_finger_tip[1] and pinky_tip[1] > index_finger_tip[1]): 
-        #                cv2.FONT_HERSHEY_SIMPLEX,
-        #                2, (0, 0, 255), 6)
+        
+
+
         return None                             
