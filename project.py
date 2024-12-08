@@ -2,7 +2,7 @@ import time
 from asistente import AsistenteVoz
 #from aprendizaje import Aprendizaje
 #from test import Test
-from juego_ia import Juego_senias
+from juego_AH import Juego_senias
 import customtkinter as ctk
 
 class VirtualAssistant:
