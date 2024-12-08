@@ -78,7 +78,7 @@ class ClasificadorSenia:
             and abs(thumb_tip[1] - pinky_pip[1]) < 30:
             return 'A'
                     
-        elif index_finger_pip[1] - index_finger_tip[1]>0 and pinky_pip[1] - pinky_tip[1] > 0 and \
+        elif index_finger_pip[1] > index_finger_tip[1] and pinky_pip[1] - pinky_tip[1] > 0 and \
             middle_finger_pip[1] - middle_finger_tip[1] >0 and ring_finger_pip[1] - ring_finger_tip[1] >0 and \
             middle_finger_tip[1] - ring_finger_tip[1] <0 and abs(thumb_tip[1] - ring_finger_pip2[1])<40:
             return 'B'
@@ -134,7 +134,8 @@ class ClasificadorSenia:
         #    cv2.putText(image, 'J', (700, 150), 
         #                cv2.FONT_HERSHEY_SIMPLEX, 
         #                3.0, (0, 0, 255), 6)
-                    
+
+        # Desde la R hasta la Z       
         
 
 
