@@ -135,8 +135,33 @@ class ClasificadorSenia:
         #                cv2.FONT_HERSHEY_SIMPLEX, 
         #                3.0, (0, 0, 255), 6)
 
-        # Desde la R hasta la Z       
+
+        # Desde la R hasta la Z   
+        # letra R  
+        elif distancia_euclidiana(index_finger_tip, middle_finger_tip) < 20 \
+                and index_finger_tip[1] < index_finger_pip[1] \
+                and middle_finger_tip[1] < middle_finger_pip[1] \
+                and ring_finger_tip[1] > ring_finger_pip[1] \
+                and pinky_tip[1] > pinky_pip[1] and thumb_tip[1] > index_finger_pip[1] \
+                and distancia_euclidiana(thumb_tip, index_finger_pip) > 30:
+            return 'R'
+        
+        #elif abs(index_finger_tip[1] - palm[1]) < 40 \
+        #    and abs(middle_finger_tip[1] - palm[1]) < 40 \
+        #    and abs(ring_finger_tip[1] - palm[1]) < 40 \
+        #    and abs(pinky_tip[1] - palm[1]) < 40 \
+        #    and thumb_tip[1] < index_finger_tip[1]:
+             # Condición para la letra S
+        #    return 'S'
+        elif distancia_euclidiana(index_finger_tip, wrist) < distancia_euclidiana(index_finger_mcp, wrist) \
+            and distancia_euclidiana(middle_finger_tip, wrist) < distancia_euclidiana(middle_finger_mcp, wrist) \
+            and distancia_euclidiana(ring_finger_tip, wrist) < distancia_euclidiana(ring_finger_mcp, wrist) \
+            and distancia_euclidiana(pinky_tip, wrist) < distancia_euclidiana(pinky_tip_mcp, wrist) \
+            and thumb_tip[1] < index_finger_tip[1] and thumb_tip[1] < middle_finger_tip[1]:
+            return 'S'
+        
+        
         
 
-
+        
         return None                             
