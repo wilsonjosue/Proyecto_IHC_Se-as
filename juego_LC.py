@@ -6,13 +6,11 @@ from threading import Thread
 from PIL import Image
 import numpy as np
 
-
 # Configuración de la pantalla
 ANCHO = 800
 ALTO = 600
 COLOR_LETRA = (0, 0, 0)
 FPS = 60
-
 
 class JuegoLetras:
     def __init__(self):
@@ -22,47 +20,38 @@ class JuegoLetras:
         self.reloj = pygame.time.Clock()
         self.fuente = pygame.font.Font(None, 74)
 
-
         # Cargar la imagen de fondo
         self.fondo = pygame.image.load("fondo1.jpg")
         self.fondo = pygame.transform.scale(self.fondo, (ANCHO, ALTO))  # Asegurarnos de que se ajuste al tamaño de la pantalla
-
 
         # Inicializar detección de señas
         self.clasificador_senia = ClasificadorSenia()
         self.camara = cv2.VideoCapture(0)
 
-
         # Establecer resolución de la cámara
         self.camara.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         self.camara.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-
 
         if not self.camara.isOpened():
             print("Error: No se pudo acceder a la cámara")
             self.jugando = False  # Detener el juego si no se puede acceder a la cámara
             return
 
-
         # Letras que caen
         self.letras = []
         self.velocidad = 2
         self.letra_detectada = None
 
-
         # Estado del juego
         self.jugando = True
         self.puntuacion = 0
 
-
         # Vidas del jugador (agregamos 50 vidas)
         self.vidas = 50
-
 
         # Botones
         self.boton_empezar = pygame.Rect(100, 500, 200, 50)  # Posición y tamaño del botón "Empezar"
         self.boton_salir = pygame.Rect(500, 500, 200, 50)  # Posición y tamaño del botón "Salir"
-
 
     def generar_letra(self):
         """Genera una letra aleatoria que comienza en una posición aleatoria."""
@@ -70,7 +59,6 @@ class JuegoLetras:
         x = random.randint(50, ANCHO - 50)
         y = -50  # Comienza fuera de la pantalla
         self.letras.append({"letra": letra, "posicion": [x, y]})
-
 
     def procesar_camara(self):
         """Procesa las imágenes de la cámara para detectar la letra señalada."""
@@ -81,29 +69,22 @@ class JuegoLetras:
                 print("Error: No se pudo leer el frame de la cámara")
                 continue
 
-
             print("Frame capturado correctamente.")
-
 
             # Convertir el frame de BGR a RGB para Pygame
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-
             # Rotar la imagen 90 grados en sentido antihorario
             frame_rgb = cv2.rotate(frame_rgb, cv2.ROTATE_90_COUNTERCLOCKWISE)
-
 
             # Usar Pygame para mostrar el feed de la cámara
             frame_surface = pygame.surfarray.make_surface(frame_rgb)
 
-
             # Limpiar la pantalla antes de dibujar el nuevo frame
             self.pantalla.fill((0, 0, 0))  # Limpiar la pantalla a negro antes de dibujar
 
-
             # Mostrar el feed de la cámara en la pantalla (en la parte superior)
             self.pantalla.blit(frame_surface, (0, 0))  # Aquí puedes ajustar la posición si es necesario
-
 
             # Procesar el frame con el clasificador de señas
             letra, _ = self.clasificador_senia.procesar_mano(frame)
@@ -111,29 +92,21 @@ class JuegoLetras:
                 print(f"Letra detectada: {letra}")  # Mensaje cuando se detecta una letra
                 self.letra_detectada = letra
 
-
             # Dibujar las letras que caen después de mostrar el feed de la cámara
             self.dibujar()
 
-
             pygame.display.update()  # Actualizar la pantalla de Pygame
-
 
             # Pausar ligeramente el bucle para evitar un ciclo infinito rápido
             pygame.time.delay(20)  # Esto ralentiza el bucle del hilo de la cámara
-
-
-
 
     def mover_letras(self):
         """Mueve las letras hacia abajo y las elimina si salen de la pantalla."""
         for letra in self.letras:
             letra["posicion"][1] += self.velocidad
 
-
         # Eliminar letras que salen de la pantalla
         self.letras = [l for l in self.letras if l["posicion"][1] < ALTO]
-
 
     def verificar_colision(self):
         """Verifica si la letra detectada coincide con alguna en pantalla."""
@@ -144,7 +117,6 @@ class JuegoLetras:
                     self.puntuacion += 1
                     self.letra_detectada = None
                     return
-
 
     def dibujar(self):
         """Dibuja las letras y la información del juego en pantalla."""
@@ -157,19 +129,15 @@ class JuegoLetras:
             texto = self.fuente.render(letra["letra"], True, COLOR_LETRA)
             self.pantalla.blit(texto, letra["posicion"])
 
-
         # Dibujar puntuación
         puntuacion_texto = self.fuente.render(f"Puntuación: {self.puntuacion}", True, COLOR_LETRA)
         self.pantalla.blit(puntuacion_texto, (10, 10))
-
 
         # Mostrar las vidas
         vidas_texto = self.fuente.render(f"Vidas: {self.vidas}", True, COLOR_LETRA)
         self.pantalla.blit(vidas_texto, (ANCHO - 200, 10))
 
-
         pygame.display.flip()
-
 
     def dibujar_botones(self):
         """Dibuja los botones en pantalla."""
@@ -178,12 +146,10 @@ class JuegoLetras:
         texto_empezar = self.fuente.render("Empezar", True, (255, 255, 255))
         self.pantalla.blit(texto_empezar, (self.boton_empezar.x + 50, self.boton_empezar.y + 10))
 
-
         # Botón "Salir"
         pygame.draw.rect(self.pantalla, (255, 0, 0), self.boton_salir)
         texto_salir = self.fuente.render("Salir", True, (255, 255, 255))
         self.pantalla.blit(texto_salir, (self.boton_salir.x + 70, self.boton_salir.y + 10))
-
 
     def mostrar_puntuacion_final(self):
         """Muestra la puntuación final cuando el juego termina."""
@@ -191,37 +157,30 @@ class JuegoLetras:
         puntuacion_texto = self.fuente.render(f"Puntuación final: {self.puntuacion}", True, COLOR_LETRA)
         self.pantalla.blit(puntuacion_texto, (ANCHO // 2 - 150, ALTO // 2 - 50))
 
-
         # Botón de reiniciar o salir
         pygame.draw.rect(self.pantalla, (0, 255, 0), self.boton_empezar)
         texto_empezar = self.fuente.render("Nuevo Juego", True, (255, 255, 255))
         self.pantalla.blit(texto_empezar, (self.boton_empezar.x + 50, self.boton_empezar.y + 10))
 
-
         pygame.draw.rect(self.pantalla, (255, 0, 0), self.boton_salir)
         texto_salir = self.fuente.render("Salir", True, (255, 255, 255))
         self.pantalla.blit(texto_salir, (self.boton_salir.x + 70, self.boton_salir.y + 10))
 
-
         pygame.display.update()
-
 
     def ejecutar(self):
         """Bucle principal del juego."""
         self.dibujar_botones()  # Dibuja los botones al inicio
         pygame.display.update()
 
-
         # Bandera de estado
         en_juego = False
-
 
         while not en_juego:
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:
                     pygame.quit()
                     exit()
-
 
                 # Verificar clic en el botón "Empezar"
                 if evento.type == pygame.MOUSEBUTTONDOWN:
@@ -230,18 +189,15 @@ class JuegoLetras:
                         Thread(target=self.procesar_camara, daemon=True).start()  # Inicia el hilo de la cámara
                         print("Hilo de cámara iniciado.")  # Mensaje para confirmar que el hilo se ha iniciado
 
-
                 # Verificar clic en el botón "Salir"
                 if evento.type == pygame.MOUSEBUTTONDOWN:
                     if self.boton_salir.collidepoint(evento.pos):
                         pygame.quit()
                         exit()
 
-
             # Dibujar los botones (esto se dibuja continuamente)
             self.dibujar_botones()
             pygame.display.update()
-
 
         # Bucle principal del juego
         contador = 0
@@ -250,16 +206,13 @@ class JuegoLetras:
                 if evento.type == pygame.QUIT:
                     self.jugando = False
 
-
             # Generar nuevas letras
             if contador % 90 == 0:  # Cada 1.5 segundos (FPS = 60)
                 self.generar_letra()
 
-
             # Mover letras y verificar colisión
             self.mover_letras()
             self.verificar_colision()
-
 
             # Verificar pérdida de vida
             for letra in self.letras:
@@ -267,23 +220,18 @@ class JuegoLetras:
                     self.letras.remove(letra)
                     self.vidas -= 1  # Restar una vida
 
-
             # Verificar si se ha acabado el juego
             if self.vidas <= 0:
                 self.jugando = False
 
-
             # Dibujar pantalla
             self.dibujar()
-
 
             contador += 1
             self.reloj.tick(FPS)
 
-
         # Mostrar puntuación final y botones de reiniciar o salir
         self.mostrar_puntuacion_final()
-
 
         # Esperar entrada del jugador para reiniciar o salir
         while True:
@@ -292,7 +240,6 @@ class JuegoLetras:
                     pygame.quit()
                     exit()
 
-
                 # Verificar clic en el botón "Nuevo Juego"
                 if evento.type == pygame.MOUSEBUTTONDOWN:
                     if self.boton_empezar.collidepoint(evento.pos):
@@ -300,20 +247,15 @@ class JuegoLetras:
                         juego_nuevo.ejecutar()  # Iniciar un nuevo juego
                         return  # Salir de la función actual
 
-
                 # Verificar clic en el botón "Salir"
                 if evento.type == pygame.MOUSEBUTTONDOWN:
                     if self.boton_salir.collidepoint(evento.pos):
                         pygame.quit()
                         exit()
 
-
             # Dibujar los botones
             self.dibujar_botones()
             pygame.display.update()
-
-
-
 
 if __name__ == "__main__":
     juego = JuegoLetras()
