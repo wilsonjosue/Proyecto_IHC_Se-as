@@ -279,7 +279,7 @@ class JuegoLetras:
             self.dibujar_botones()
             pygame.display.update()
 
-#if __name__ == "__main__":
-#    print("Ejecutando juego_LC como script independiente.")
-    #juego2 = JuegoLetras(callback=None)
-    #juego2.ejecutar()
+if __name__ == "__main__":
+    print("Ejecutando juego_LC como script independiente.")
+    juego2 = JuegoLetras(callback=None)
+    juego2.ejecutar()
