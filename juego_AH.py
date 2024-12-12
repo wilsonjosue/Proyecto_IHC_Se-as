@@ -319,5 +319,6 @@ class Juego_senias:
         app.unbind("<Key>")
 
 if __name__ == "__main__":
+    
     juego = Juego_senias(callback=None)
     juego.ejecutar()
