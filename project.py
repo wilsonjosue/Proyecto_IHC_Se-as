@@ -23,13 +23,14 @@ class VirtualAssistant:
     def enviar_voz(self):
         return self.asistente_voz.enviar_voz()
 
-    def imprimir_mensaje(self, mensaje):
-        """Imprime un mensaje en la consola embebida y el terminal, y lo lee en voz alta."""
+    def imprimir_mensaje(self, mensaje, leer_voz=True):
+        """Imprime un mensaje en la consola embebida y el terminal, y lo lee en voz alta opcionalmente."""
         if self.console:
             self.console.insert(ctk.END, f"{mensaje}\n")
             self.console.see(ctk.END)  # Auto-scroll hacia abajo
         print(mensaje)
-        self.texto_a_audio(mensaje)  # Leer el mensaje en voz alta
+        if leer_voz:
+            self.texto_a_audio(mensaje)  # Leer el mensaje en voz alta
 
     def do_learn(self):
         self.option_label.configure(text="Escogiste Aprendizaje")
@@ -45,6 +46,17 @@ class VirtualAssistant:
         self.option_label.configure(text="Escogiste Juego Del Ahorcado")
         self.imprimir_mensaje("Iniciando Juego Del Ahorcado...")
         self.win_choose.destroy()
+        juego = Juego_senias(callback=self.presentar_opciones)  # Pasar el callback
+        juego.ejecutar()
+
+    def leer_opciones(self):
+        """Lee las opciones después de que la interfaz esté lista."""
+        self.imprimir_mensaje("Opciones disponibles:")
+        self.imprimir_mensaje(
+            "1) Juego Reconoce Señas\n"
+            "2) Juego Letras Caen\n"
+            "3) Juego Del Ahorcado"
+        )
 
     def presentar_opciones(self):
         self.win_choose = ctk.CTk()
@@ -68,13 +80,7 @@ class VirtualAssistant:
             wrap="word",
         )
         self.console.pack(pady=(10, 20))
-        self.imprimir_mensaje("Bienvenido al Asistente Virtual.")
-        self.imprimir_mensaje(
-            "Opciones disponibles:\n"
-            "1) Juego Reconoce Señas\n"
-            "2) Juego Letras Caen\n"
-            "3) Juego Del Ahorcado"
-        )
+        self.imprimir_mensaje("Bienvenido al Asistente Virtual.", leer_voz=False)
 
         # Botones para opciones
         button_frame = ctk.CTkFrame(self.win_choose)
@@ -110,6 +116,9 @@ class VirtualAssistant:
         )
         self.option_label.pack(pady=10)
 
+        # Leer las opciones después de que la interfaz esté lista
+        self.win_choose.after(1000, self.leer_opciones)  # Esperar 1 segundo antes de leer las opciones
+
         self.win_choose.mainloop()
 
         if self.option_label.cget("text") == "Escogiste Aprendizaje":
@@ -129,3 +138,4 @@ if __name__ == "__main__":
     ctk.set_default_color_theme("blue")  # Opciones: blue, dark-blue, green
     virtual_assistant = VirtualAssistant()
     virtual_assistant.ejecutar_programa()
+
