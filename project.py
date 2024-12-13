@@ -3,7 +3,7 @@ from asistente import AsistenteVoz
 from juego_AH import Juego_senias
 from juego_LC import JuegoLetras
 import customtkinter as ctk
-
+from PIL import Image
 
 class VirtualAssistant:
     def __init__(self):
@@ -33,17 +33,18 @@ class VirtualAssistant:
             self.texto_a_audio(mensaje)  # Leer el mensaje en voz alta
 
     def do_learn(self):
-        self.option_label.configure(text="Escogiste Aprendizaje")
+        
         self.imprimir_mensaje("Iniciando aprendizaje...")
         self.win_choose.destroy()
 
     def do_game2(self):
-        self.option_label.configure(text="Escogiste Juego Letras Caen")
+        
         self.imprimir_mensaje("Iniciando Juego Letras Caen...")
         self.win_choose.destroy()
+        self.mi_juego2.ejecutar()
 
     def do_game(self):
-        self.option_label.configure(text="Escogiste Juego Del Ahorcado")
+        
         self.imprimir_mensaje("Iniciando Juego Del Ahorcado...")
         self.win_choose.destroy()
         juego = Juego_senias(callback=self.presentar_opciones)  # Pasar el callback
@@ -75,59 +76,73 @@ class VirtualAssistant:
         self.console = ctk.CTkTextbox(
             self.win_choose,
             width=700,
-            height=200,
-            font=("Arial", 12),
+            height=150,
+            font=("Arial", 15),
             wrap="word",
         )
         self.console.pack(pady=(10, 20))
         self.imprimir_mensaje("Bienvenido al Asistente Virtual.", leer_voz=False)
 
-        # Botones para opciones
+        # Crear el contenedor de las opciones (imágenes + botones)
         button_frame = ctk.CTkFrame(self.win_choose)
-        button_frame.pack(pady=20)
+        button_frame.pack(pady=20, padx=10)
 
+        # Cargar imágenes
+        image_size = (200, 150)
+        img_reconoce_señas = ctk.CTkImage(
+            light_image=Image.open("images/juego_reconoce_señas.png"), size=image_size
+        )
+        img_letras_caen = ctk.CTkImage(
+            light_image=Image.open("images/juego_letras_caen.png"), size=image_size
+        )
+        img_ahorcado = ctk.CTkImage(
+            light_image=Image.open("images/juego_del_ahorcado.png"), size=image_size
+        )
+
+        # Opción 1: Juego Reconoce Señas
+        option1_frame = ctk.CTkFrame(button_frame, fg_color="transparent")
+        option1_frame.grid(row=0, column=0, padx=10, pady=10)
+        img_label1 = ctk.CTkLabel(option1_frame, image=img_reconoce_señas, text="")
+        img_label1.pack(pady=5)
         learn_button = ctk.CTkButton(
-            button_frame,
+            option1_frame,
             text="Juego Reconoce Señas",
             command=self.do_learn,
             width=200,
         )
-        learn_button.grid(row=0, column=0, padx=10, pady=10)
+        learn_button.pack()
 
+        # Opción 2: Juego Letras Caen
+        option2_frame = ctk.CTkFrame(button_frame, fg_color="transparent")
+        option2_frame.grid(row=0, column=1, padx=10, pady=10)
+        img_label2 = ctk.CTkLabel(option2_frame, image=img_letras_caen, text="")
+        img_label2.pack(pady=5)
         juego2_button = ctk.CTkButton(
-            button_frame,
+            option2_frame,
             text="Juego Letras Caen",
             command=self.do_game2,
             width=200,
         )
-        juego2_button.grid(row=0, column=1, padx=10, pady=10)
+        juego2_button.pack()
 
+        # Opción 3: Juego del Ahorcado
+        option3_frame = ctk.CTkFrame(button_frame, fg_color="transparent")
+        option3_frame.grid(row=0, column=2, padx=10, pady=10)
+        img_label3 = ctk.CTkLabel(option3_frame, image=img_ahorcado, text="")
+        img_label3.pack(pady=5)
         juego_button = ctk.CTkButton(
-            button_frame,
+            option3_frame,
             text="Juego Del Ahorcado",
             command=self.do_game,
             width=200,
         )
-        juego_button.grid(row=0, column=2, padx=10, pady=10)
-
-        # Etiqueta para mostrar selección
-        self.option_label = ctk.CTkLabel(
-            self.win_choose, text="", font=ctk.CTkFont(size=16)
-        )
-        self.option_label.pack(pady=10)
+        juego_button.pack()
 
         # Leer las opciones después de que la interfaz esté lista
         self.win_choose.after(1000, self.leer_opciones)  # Esperar 1 segundo antes de leer las opciones
 
         self.win_choose.mainloop()
-
-        if self.option_label.cget("text") == "Escogiste Aprendizaje":
-            self.mi_aprendizaje.ejecutar()
-        elif self.option_label.cget("text") == "Escogiste Juego Letras Caen":
-            self.mi_juego2.ejecutar()
-        elif self.option_label.cget("text") == "Escogiste Juego Del Ahorcado":
-            self.mi_juego.ejecutar()
-
+        
     def ejecutar_programa(self):
         self.presentar_opciones()
 
