@@ -21,9 +21,8 @@ class Juego_senias:
         # Variables para el juego
         self.EntradaTexto = None
         self.Texto1, self.Texto2 = None, None  # Inicializadas más tarde
-        #self.Texto1, self.Texto2 = tk.StringVar(), tk.StringVar()
-        #self.Texto2.set("Tus jugadas: ")
-
+        # estado de hilo de la camara
+        self.camara_activa = False
         # Imagen
         self.frame_imagen = None
         # Muñeco
@@ -57,7 +56,8 @@ class Juego_senias:
         self.palabra(app)
         self.botones(app)
         self.JuegoNuevo()
-
+        self.camara_activa = True  # Activar la cámara
+        
         # Iniciar cámara para detección de manos
         self.iniciar_hilo_camara()
 
@@ -86,7 +86,7 @@ class Juego_senias:
             self.EntradaTexto.configure(text=key_pressed)
     # falta condigurar arreglzr parque no envie la letra aoutomaticamente y este ala izquierda arriba pantalla.
     def procesar_camara(self):
-        while True:
+        while self.camara_activa:
             ret, frame = self.cap.read()
             if not ret:
                 continue
@@ -112,7 +112,8 @@ class Juego_senias:
                     self._ctk_image.configure(dark_image=img)
                 self.video_label.configure(image=self._ctk_image)
 
-            self.video_label.after(0, actualizar_imagen)
+            if self.camara_activa:
+                self.video_label.after(0, actualizar_imagen)
             
     # todo LO RELACIONADO CON EL JUEGO DEL AHORCADO
     def JuegoNuevo(self):
@@ -301,10 +302,14 @@ class Juego_senias:
                 self.Lienzo.create_line(100,135, 130,165, width=3,fill="white")#pierna2
 
     def cerrar_ventana(self, app):
+        self.camara_activa = False  # Detener el hilo de la cámara
+        if self.cap.isOpened():
+            self.cap.release()  # Liberar la cámara
+
         self.desvincular_eventos(app)
         app.destroy()
-        #if self.callback:
-        #   self.callback()
+        if self.callback:
+           self.callback()
     
     def desvincular_eventos(self, app):
         app.unbind("<Return>")
