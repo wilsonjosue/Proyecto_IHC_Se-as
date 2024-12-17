@@ -84,7 +84,7 @@ class ClasificadorSenia:
             return 'B'
                         
         elif 30 < abs(index_finger_tip[1] - thumb_tip[1]) < 80 and \
-            abs(index_finger_tip[0] - thumb_tip[0]) < 40 and \
+            abs(index_finger_tip[0] - thumb_tip[0]) < 50 and \
             middle_finger_tip[1] > middle_finger_dip[1] and \
             ring_finger_tip[1] > ring_finger_dip[1] and \
             pinky_tip[1] > pinky_dip[1]:
@@ -111,38 +111,40 @@ class ClasificadorSenia:
         # Seguimos con las demas señas
 
         elif 20 < abs(index_finger_tip[1] - thumb_tip[1]) < 60 and \
-            abs(index_finger_tip[0] - thumb_tip[0]) < 30 and \
+            10 < abs(index_finger_tip[0] - thumb_tip[0]) < 30 and \
             middle_finger_tip[1] > middle_finger_pip[1] and ring_finger_tip[1] > ring_finger_pip[1] and \
             pinky_tip[1] > pinky_pip[1]:
             return 'G' 
                     
-        # Falta mejorar  para el pulgar este doblado y pegado al ring - pinky finger
+        # Listo: H
         elif index_finger_pip[1] > index_finger_tip[1] and middle_finger_pip[1] > middle_finger_tip[1] and \
             ring_finger_pip[1] < ring_finger_tip[1] and pinky_pip[1] < pinky_tip[1] and \
-            abs(index_finger_tip[1] - middle_finger_tip[1]) < 20:
+            abs(index_finger_tip[1] - middle_finger_tip[1]) < 20 and \
+            index_finger_tip[1] < middle_finger_tip[1] and index_finger_tip[1] < ring_finger_tip[1] and \
+            index_finger_tip[1] < pinky_tip[1]:  # El índice está por encima de los demás dedos
             return 'H' 
                   
-        # Falta corregir mas se confunde  
+        # Listo : I
         elif pinky_tip[1] < pinky_pip[1] and index_finger_tip[1] > index_finger_dip[1] and \
             middle_finger_tip[1] > middle_finger_dip[1] and ring_finger_tip[1] > ring_finger_dip[1] and \
             thumb_tip[1] > thumb_ip[1]:
             return 'I' 
             
-        # calibrar letra J                   
-        elif distancia_euclidiana(thumb_tip, middle_finger_dip) < 20 \
-            and index_finger_tip[1] > index_finger_pip[1] \
-            and middle_finger_tip[1] > middle_finger_pip[1] \
-            and ring_finger_tip[1] > ring_finger_pip[1] \
-            and pinky_tip[1] < pinky_pip[1]:
+        # Listp:J                   
+        elif pinky_tip[1] < pinky_pip[1] and index_finger_tip[1] > index_finger_dip[1] and \
+            middle_finger_tip[1] > middle_finger_dip[1] and ring_finger_tip[1] > ring_finger_dip[1] and \
+            thumb_tip[1] > thumb_ip[1] and \
+            distancia_euclidiana(thumb_tip, index_finger_pip) < 20:  # El pulgar toca index_finger_pip:  
             return 'J'
         
-        # Falta calibrar K
-        elif distancia_euclidiana(thumb_tip, index_finger_mcp) < 20 \
-            and index_finger_tip[1] < index_finger_mcp[1] \
-            and middle_finger_tip[1] < middle_finger_mcp[1] \
-            and ring_finger_tip[1] > ring_finger_pip[1] \
-            and pinky_tip[1] > pinky_pip[1] \
-            and abs(wrist[1] - middle_finger_tip[1]) < 10:  # Mano inclinada a la izquierda
+        # Listo: K
+        elif index_finger_tip[1] < index_finger_pip[1] and middle_finger_tip[1] < middle_finger_pip[1] and \
+            ring_finger_tip[1] > ring_finger_pip[1] and pinky_tip[1] > pinky_pip[1] and \
+            thumb_tip[0] < middle_finger_mcp[0] and 20< abs(index_finger_tip[1] - middle_finger_tip[1]) < 30 and\
+            distancia_euclidiana(thumb_tip, index_finger_pip) < 20 and \
+            index_finger_tip[1] < middle_finger_tip[1] and index_finger_tip[1] < ring_finger_tip[1] and \
+            index_finger_tip[1] < pinky_tip[1]:  # El índice está por encima de los demás dedos
+            
             return 'K'
 
         #Falta calibrar L
